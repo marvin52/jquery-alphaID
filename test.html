@@ -1,0 +1,28 @@
+
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="src/alphaID.src.js"></script>
+
+<script>
+$(function(){
+
+
+	//First Test
+	$().alphaID();
+
+	//Let's see how we change the salt for all the plug-in
+	$.fn.alphaID.defaults = {
+    	salt: "My_Salt_1"
+	};
+	$().alphaID();
+	
+	//And now, only for this call of the function
+	$().alphaID({salt:'Temporary_Salt'});
+	
+	//If we call again, nothing changes, we get My_Salt_1 again, because we didn't change the global defaults
+	$().alphaID();
+
+});
+</script>
+
+<div>
+</div>
