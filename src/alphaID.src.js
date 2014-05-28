@@ -15,22 +15,47 @@ if (typeof jQuery === 'undefined') {
 
 (function( $ ) {
 
-	// Heart of the plug-in
+	/**
+	 * TODO - Heart of the plug-in
+	 *  
+	 *
+	 * @options
+	 */ 
 	$.fn.alphaID = function(options) {
 	    var opts = $.extend( {}, $.fn.alphaID.defaults, options );
 	    this.alphaID.core('1','2',opts.salt);
 	    return this;
 	};
 
-	// Soon core convert/unconvert functions will be here
+
+	/**
+	 * TODO - Soon core convert/unconvert functions will be here
+	 * 
+	 *
+	 */ 
 	$.fn.alphaID.core = function(str, toNum, salt) {
 		toNum = (toNum === null) ? true : false;
-	    console.log({'string':str,'toNum':toNum,'salt':salt});
+		console.log({'string':str,'toNum':toNum,'salt':salt});
 	};
 
+
+	/**
+	 * TODO - Binding events
+	 *
+	 *
+	 */
+	$.fn.alphaID.bind = function(options) {
+	    // Soon :)
+	};
+
+	/**
+	 * TODO - Binding events
+	 *
+	 *
+	 */
 	// Default Options
 	$.fn.alphaID.defaults = {
-    	salt: "nPcobmtNh6BqUdJjWA_rpS0-K1kFC2luMX3Dxzf549sGZ8yR7OEeHTvgIVwaYiLQ"
+		salt: "nPcobmtNh6BqUdJjWA_rpS0-K1kFC2luMX3Dxzf549sGZ8yR7OEeHTvgIVwaYiLQ"
 	};
 
 })( jQuery );
