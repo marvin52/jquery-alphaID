@@ -13,7 +13,24 @@ $(function(){
 
 	// Now let's see it in action. 
 	// Really Easy to use right?
-	$('#number').alphaID({event:'keyup',target:'span'});
+	$('#number').alphaID({target:'#t1'});
+	$('#alpha').alphaID({target:'#t2',
+						toNum:true,
+						before:function() {
+								console.log("Event Before: It's going to start now! ");
+								//throw new Error('My error message');
+						},
+						error:function(e) {
+								console.log(" Event Error: " + e);
+						},
+						success:function() {
+							console.log('Event Success: We did it without errors !');
+						},
+						finally: function() {
+							console.log('Event Finnally: This will run even with errors !');
+						}
+
+					});
 
 	
 });
@@ -22,5 +39,9 @@ $(function(){
 <center>
 	<label><h1>Type an integer:<h1></label>
 	<input type="text" id="number">
-	<h3> The AlphaID is: <span></span></h3>
+	<h3> The AlphaID is: <span id="t1"></span></h3>
+
+	<label><h1>Type an AlphaID:<h1></label>
+	<input type="text" id="alpha">
+	<h3> The Number is: <span id="t2"></span></h3>
 </center>

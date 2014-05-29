@@ -1,5 +1,5 @@
 /*!
- * jQuery AlphaID  - v0.0.1
+ * jQuery AlphaID  - v0.0.2b
  * ------------------------
  * Developed by @b03ir4 & @musicompositor
  * Licensed under MIT (https://github.com/marceloboeira/jquery-alphaID/blob/master/LICENSE)
@@ -22,11 +22,20 @@ if (typeof jQuery === 'undefined') {
 	    }
 	    else {
 	    	$(this).on(opts.event, function(){
-	    		console.log('call');
-	    		source = $(this);
-	    		$.each($(opts.target),function(){
-	    			$(this).html(core(source.val(),false));
-	    		});
+	    		try {
+	    			opts.before(this);
+	    			source = $(this);
+	    			$.each($(opts.target),function(){
+						$(this).html(core(source.val(),opts.toNum));
+	    			});
+	    			opts.success(this);
+	    		}
+	    		catch (e) {
+	    			opts.error(e,this);	
+	    		}
+	    		finally {
+	    			opts.finally(this);
+	    		}
 	    	});
 	    	return this;
 	    }
@@ -81,6 +90,14 @@ if (typeof jQuery === 'undefined') {
 		index: 'wGR4_-iEXgvIaSrycdABYKL8pFokTqe6UzPJWhMbCDH5fZul3Os1m207V9NtnxjQ',
 		event: 'keyup',
 		target: '#alphaID-target',
+		toNum: false,
+		
+		//Events
+		before: function(){},
+		success: function(){},
+		error: function(){},
+		finally: function(){},
+
 		debug: 0
 	};
 
