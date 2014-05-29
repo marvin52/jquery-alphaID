@@ -6,23 +6,21 @@
 $(function(){
 
 
-	//First Test
-	$().alphaID();
+	//Use Wihout selector:
+	var val = $().alphaID(10,false);
+	console.log('alphaID(10,false) returns: ' + val);
+	console.log('alphaID("B",true) returns: ' + $().alphaID(val,true));
 
-	//Let's see how we change the salt for all the plug-in
-	$.fn.alphaID.defaults = {
-    	salt: "My_Salt_1"
-	};
-	$().alphaID();
-	
-	//And now, only for this call of the function
-	$().alphaID({salt:'Temporary_Salt'});
-	
-	//If we call again, nothing changes, we get My_Salt_1 again, because we didn't change the global defaults
-	$().alphaID();
+	// Now let's see it in action. 
+	// Really Easy to use right?
+	$('#number').alphaID({event:'keyup',target:'span'});
 
+	
 });
 </script>
 
-<div>
-</div>
+<center>
+	<label><h1>Type an integer:<h1></label>
+	<input type="text" id="number">
+	<h3> The AlphaID is: <span></span></h3>
+</center>

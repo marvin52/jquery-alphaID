@@ -10,52 +10,78 @@
 
 if (typeof jQuery === 'undefined') { 
 	// Alert users without jQuery instanced
-	throw new Error('jQuery AlphaID\'s  is a jQuery Plugin, so it needs jQuery to work ;) ');
+	throw new Error('jQuery AlphaID is a jQuery Plugin, so it needs jQuery to work ;) ');
 }
 
 (function( $ ) {
 
-	/**
-	 * TODO - Heart of the plug-in
-	 *  
-	 *
-	 * @options
-	 */ 
-	$.fn.alphaID = function(options) {
-	    var opts = $.extend( {}, $.fn.alphaID.defaults, options );
-	    this.alphaID.core('1','2',opts.salt);
-	    return this;
+	$.fn.alphaID = function(a,b,c) {
+		var opts = $.extend({}, $.fn.alphaID.defaults, a);		
+	    if (this.selector == "") {
+	    	return core(a,b);
+	    }
+	    else {
+	    	$(this).on(opts.event, function(){
+	    		console.log('call');
+	    		source = $(this);
+	    		$.each($(opts.target),function(){
+	    			$(this).html(core(source.val(),false));
+	    		});
+	    	});
+	    	return this;
+	    }
 	};
 
-
-	/**
-	 * TODO - Soon core convert/unconvert functions will be here
-	 * 
-	 *
-	 */ 
-	$.fn.alphaID.core = function(str, toNum, salt) {
-		toNum = (toNum === null) ? true : false;
-		console.log({'string':str,'toNum':toNum,'salt':salt});
+	function core(v, toNum) {
+		toNum = (toNum === null) ? true : toNum;
+		index = $.fn.alphaID.defaults.index
+		return (toNum === true) ? decode(v,index) : encode(v,index);
 	};
 
-
-	/**
-	 * TODO - Binding events
-	 *
-	 *
-	 */
-	$.fn.alphaID.bind = function(options) {
-	    // Soon :)
+	function encode(n, index) {
+		n = parseInt(n);
+		if('undefined' == typeof n){
+	      return null;
+	    }
+	    else if('number' != typeof(n)){
+	      throw new Error('jQuery AlphaID: Wrong parameter type!');
+	    }
+	    var ret = '';
+	    for(var i=Math.floor(Math.log(parseInt(n))/Math.log(index.length));i>=0;i--){
+	      ret = ret + index.substr((Math.floor(parseInt(n) / getBaseLog(index.length, i)) % index.length),1);
+	    }
+	    return ret.reverse();
 	};
 
-	/**
-	 * TODO - Binding events
-	 *
-	 *
-	 */
-	// Default Options
+	function decode(s, index) {
+		s = String(s);
+		if('undefined' == typeof s){
+	      return null;
+	    }
+	    else if('string' != typeof s){
+	      throw new Error('jQuery AlphaID: Wrong parameter type!');
+	    }
+	    var str = s.reverse();
+	    var ret = 0;
+	    for(var i=0;i<=(str.length - 1);i++){
+	      ret = ret + index.indexOf(str.substr(i,1)) * (getBaseLog(index.length, (str.length - 1) - i));
+	    }
+	    return ret;
+	}; 
+
+	function getBaseLog(x,y) {
+	    return Math.floor(Math.pow(parseFloat(x), parseInt(y)));
+	};
+
+	String.prototype.reverse = function(){
+		return this.split('').reverse().join('');
+	};
+
 	$.fn.alphaID.defaults = {
-		salt: "nPcobmtNh6BqUdJjWA_rpS0-K1kFC2luMX3Dxzf549sGZ8yR7OEeHTvgIVwaYiLQ"
+		index: 'wGR4_-iEXgvIaSrycdABYKL8pFokTqe6UzPJWhMbCDH5fZul3Os1m207V9NtnxjQ',
+		event: 'keyup',
+		target: '#alphaID-target',
+		debug: 0
 	};
 
 })( jQuery );
